@@ -50,4 +50,3 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   See [SECURITY.md](SECURITY.md).
 
 [1.0.1]: https://github.com/pushpankar-kiran/veil-whatsapp-privacy/releases/tag/v1.0.1
-[1.0.0]: https://github.com/pushpankar-kiran/veil-whatsapp-privacy/releases/tag/v1.0.0

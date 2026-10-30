@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="Segoe UI, system-ui, -apple-system, sans-serif">
+  <rect x="1" y="1" width="758" height="318" rx="16" fill="#faf9f5" stroke="#dcdad2" stroke-width="2"/>
+
+  <!-- step badge -->
+  <circle cx="42" cy="42" r="18" fill="#1c211f"/>
+  <text x="42" y="49" text-anchor="middle" fill="#faf9f5" font-size="20" font-weight="700">2</text>
+  <text x="72" y="48" fill="#1c211f" font-size="20" font-weight="700">Turn on Developer mode</text>
+
+  <!-- browser window -->
+  <g transform="translate(40,78)">
+    <rect x="0" y="0" width="680" height="222" rx="12" fill="#ffffff" stroke="#dcdad2" stroke-width="2"/>
+    <!-- title bar -->
+    <path d="M0 12 Q0 0 12 0 L668 0 Q680 0 680 12 L680 40 L0 40 Z" fill="#f1f0ea"/>
+    <circle cx="22" cy="20" r="5" fill="#e0685f"/>
+    <circle cx="40" cy="20" r="5" fill="#e6b04a"/>
+    <circle cx="58" cy="20" r="5" fill="#5fb073"/>
+    <!-- address bar -->
+    <rect x="90" y="10" width="500" height="20" rx="10" fill="#ffffff" stroke="#dcdad2"/>
+    <text x="104" y="24" fill="#565f5b" font-size="12" font-family="Consolas, monospace">chrome://extensions</text>
+
+    <!-- toolbar row -->
+    <text x="24" y="72" fill="#1c211f" font-size="18" font-weight="700">Extensions</text>
+
+    <!-- developer mode label + toggle (ON) -->
+    <text x="500" y="72" fill="#1c211f" font-size="14" font-weight="600">Developer mode</text>
+    <rect x="612" y="58" width="44" height="22" rx="11" fill="#2f6f62"/>
+    <circle cx="645" cy="69" r="8" fill="#ffffff"/>
+
+    <!-- greyed extension card placeholder -->
+    <rect x="24" y="100" width="300" height="96" rx="10" fill="#faf9f5" stroke="#dcdad2"/>
+    <rect x="40" y="116" width="34" height="34" rx="8" fill="#1c211f"/>
+    <rect x="88" y="120" width="150" height="10" rx="5" fill="#dcdad2"/>
+    <rect x="88" y="138" width="200" height="8" rx="4" fill="#e7e5dd"/>
+    <rect x="88" y="152" width="120" height="8" rx="4" fill="#e7e5dd"/>
+  </g>
+
+  <!-- callout ring + arrow to toggle -->
+  <g>
+    <ellipse cx="697" cy="147" rx="34" ry="24" fill="none" stroke="#a8631f" stroke-width="3"/>
+    <path d="M600 250 Q660 220 685 172" fill="none" stroke="#a8631f" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round"/>
+    <path d="M690 178 L682 165 L676 179 Z" fill="#a8631f"/>
+    <rect x="330" y="252" width="270" height="30" rx="8" fill="#f6ecdd"/>
+    <text x="465" y="272" text-anchor="middle" fill="#7a4a15" font-size="14" font-weight="600">Flip this toggle ON (top-right corner)</text>
+  </g>
+</svg>

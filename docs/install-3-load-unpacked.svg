@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="Segoe UI, system-ui, -apple-system, sans-serif">
+  <rect x="1" y="1" width="758" height="298" rx="16" fill="#faf9f5" stroke="#dcdad2" stroke-width="2"/>
+
+  <!-- step badge -->
+  <circle cx="42" cy="42" r="18" fill="#1c211f"/>
+  <text x="42" y="49" text-anchor="middle" fill="#faf9f5" font-size="20" font-weight="700">3</text>
+  <text x="72" y="48" fill="#1c211f" font-size="20" font-weight="700">Load unpacked → pick the “veil” folder</text>
+
+  <!-- browser window -->
+  <g transform="translate(40,74)">
+    <rect x="0" y="0" width="680" height="200" rx="12" fill="#ffffff" stroke="#dcdad2" stroke-width="2"/>
+    <path d="M0 12 Q0 0 12 0 L668 0 Q680 0 680 12 L680 40 L0 40 Z" fill="#f1f0ea"/>
+    <circle cx="22" cy="20" r="5" fill="#e0685f"/>
+    <circle cx="40" cy="20" r="5" fill="#e6b04a"/>
+    <circle cx="58" cy="20" r="5" fill="#5fb073"/>
+    <rect x="90" y="10" width="500" height="20" rx="10" fill="#ffffff" stroke="#dcdad2"/>
+    <text x="104" y="24" fill="#565f5b" font-size="12" font-family="Consolas, monospace">chrome://extensions</text>
+
+    <!-- action buttons row (appears once Developer mode is on) -->
+    <rect x="24" y="52" width="132" height="34" rx="8" fill="#2f6f62"/>
+    <text x="90" y="74" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Load unpacked</text>
+    <rect x="168" y="52" width="132" height="34" rx="8" fill="#ffffff" stroke="#dcdad2"/>
+    <text x="234" y="74" text-anchor="middle" fill="#565f5b" font-size="13">Pack extension</text>
+    <rect x="312" y="52" width="90" height="34" rx="8" fill="#ffffff" stroke="#dcdad2"/>
+    <text x="357" y="74" text-anchor="middle" fill="#565f5b" font-size="13">Update</text>
+
+    <!-- folder picker popup (right side) -->
+    <g transform="translate(258,104)">
+      <rect x="0" y="0" width="404" height="84" rx="10" fill="#faf9f5" stroke="#dcdad2" stroke-width="2"/>
+      <text x="16" y="24" fill="#565f5b" font-size="12">Select the extension folder</text>
+      <rect x="14" y="34" width="280" height="30" rx="6" fill="#e4efec" stroke="#2f6f62"/>
+      <path d="M28 43 Q28 39 32 39 L46 39 Q49 39 50 42 L52 45 L72 45 Q76 45 76 49 L76 58 Q76 61 72 61 L32 61 Q28 61 28 58 Z" fill="#2f6f62"/>
+      <text x="90" y="54" fill="#1c211f" font-size="13" font-weight="700" font-family="Consolas, monospace">veil</text>
+      <rect x="304" y="38" width="86" height="22" rx="6" fill="#2f6f62"/>
+      <text x="347" y="53" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">Select Folder</text>
+    </g>
+  </g>
+
+  <!-- callout: caption bottom-left + arrow up to Load unpacked -->
+  <g>
+    <rect x="40" y="250" width="250" height="30" rx="8" fill="#f6ecdd"/>
+    <text x="165" y="270" text-anchor="middle" fill="#7a4a15" font-size="13" font-weight="600">Click “Load unpacked”, pick “veil”</text>
+    <path d="M150 248 Q120 205 132 168" fill="none" stroke="#a8631f" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round"/>
+    <path d="M137 172 L127 162 L124 176 Z" fill="#a8631f"/>
+  </g>
+</svg>

@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Zero-network audit
+        run: python tools/audit.py
+
+      - name: Syntax check
+        run: for f in extension/*.js test/*.js tools/*.js; do node --check "$f"; done
+
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Behaviour + security checks
+        run: python tools/run_checks.py
+
+      - name: Package extension
+        run: python tools/package.py
+
+      - name: Upload packaged extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: veil-extension
+          path: dist/veil-extension.zip

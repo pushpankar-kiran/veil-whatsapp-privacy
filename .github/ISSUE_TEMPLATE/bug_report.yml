@@ -1,0 +1,67 @@
+name: Bug report
+description: Something stays readable, or the extension misbehaves
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug! Please fill out the details below.
+        **Never paste screenshots or text of your real chats.** For layout problems, attach the
+        structure-only report from `tools/dom-probe.js` instead (it contains no names or messages).
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: Shown on the card in chrome://extensions.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: What went wrong?
+      options:
+        - A name / message / photo stays readable
+        - Something is masked that shouldn't be
+        - Lock screen / PIN
+        - Show this chat / reveal modes
+        - Notifications or tab title
+        - Popup / settings
+        - Other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happened?
+      description: Include the coverage counts from Veil's popup and any error from the extension's "Errors" page.
+    validations:
+      required: true
+  - type: textarea
+    id: probe
+    attributes:
+      label: Structure-only DOM report (optional)
+      description: Output of `tools/dom-probe.js` run in the DevTools console on web.whatsapp.com.
+      render: json
+    validations:
+      required: false
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & OS
+      placeholder: "Chrome 141 on Windows 11"
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Confirmation
+      options:
+        - label: I am not attaching screenshots, names, numbers or message text from my real chats.
+          required: true

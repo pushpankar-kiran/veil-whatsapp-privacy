@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Veil</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="icons/icon32.png" alt="" width="24" height="24">
+      <div>
+        <strong>Veil</strong>
+        <span class="sub">Privacy mask for WhatsApp Web</span>
+      </div>
+    </div>
+    <label class="switch" title="Masking on/off (Alt+Shift+X)">
+      <input type="checkbox" id="enabled" aria-label="Masking on or off"><span></span>
+    </label>
+  </header>
+
+  <form id="gate" class="gate" hidden>
+    <p>Settings are protected by your Veil PIN.</p>
+    <input type="password" id="gatePin" inputmode="numeric" autocomplete="off" placeholder="PIN" aria-label="Veil PIN">
+    <button type="submit" class="mini">Unlock settings</button>
+    <div id="gateErr" class="gate-err" role="alert"></div>
+    <button type="button" class="chip accent" id="gateLock">Lock WhatsApp now</button>
+  </form>
+
+  <div id="controls">
+  <div id="status" class="status" role="status"></div>
+
+  <section class="row3">
+    <button class="chip" data-preset="everyday" title="Blur + hover to reveal">Everyday</button>
+    <button class="chip" data-preset="presenter" title="Redact + aliases + no reveal (Alt+Shift+P)">Presenter</button>
+    <button class="chip accent" id="lockNow" title="Lock now (Alt+Shift+L)">Lock now</button>
+    <button class="chip wide" id="revealChat" title="Reveal only the open conversation (Alt+Shift+U)">Show current chat</button>
+  </section>
+
+  <section>
+    <h2>Mask style</h2>
+    <div class="seg" data-key="style">
+      <button data-v="blur">Blur</button>
+      <button data-v="redact">Redact</button>
+    </div>
+    <label class="line"><span>Show names as aliases <em>“Contact 7F3A”</em></span>
+      <input type="checkbox" class="tog" data-key="aliasNames"></label>
+    <label class="line"><span>Blur strength <output id="blurOut"></output></span>
+      <input type="range" id="blurPx" min="3" max="20" step="1"></label>
+  </section>
+
+  <section>
+    <h2>What to mask <span class="hint">items found on screen</span></h2>
+    <div id="cats" class="cats"></div>
+  </section>
+
+  <section>
+    <h2>Reveal</h2>
+    <div class="seg" data-key="reveal">
+      <button data-v="hover">Hover</button>
+      <button data-v="peek">Hold Alt</button>
+      <button data-v="none">Never</button>
+    </div>
+    <label class="line"><span>“Show this chat” button on page</span><input type="checkbox" class="tog" data-key="chatRevealButton"></label>
+    <label class="line" id="delayLine"><span>Hover delay <output id="delayOut"></output></span>
+      <input type="range" id="revealDelayMs" min="0" max="1500" step="50"></label>
+  </section>
+
+  <section>
+    <h2>Leak guards</h2>
+    <label class="line"><span>Hide desktop notification content</span><input type="checkbox" class="tog" data-key="guardNotifications"></label>
+    <label class="line"><span>Hide unread count in tab title</span><input type="checkbox" class="tog" data-key="guardTitle"></label>
+    <label class="line"><span>Strict mode <em>mask every text &amp; image</em></span><input type="checkbox" class="tog" data-key="strict"></label>
+  </section>
+
+  <section>
+    <h2>Privacy curtain</h2>
+    <label class="line"><span>Lock when I switch tabs</span><input type="checkbox" class="tog" data-key="lockOnHide"></label>
+    <label class="line"><span>Lock after inactivity</span>
+      <select id="idleLockMin">
+        <option value="0">Off</option><option value="1">1 min</option><option value="2">2 min</option>
+        <option value="5">5 min</option><option value="10">10 min</option><option value="30">30 min</option>
+      </select></label>
+    <div class="line pin">
+      <span id="pinState">No PIN: any key unlocks</span>
+      <form id="pinForm" class="pinform">
+        <input type="password" id="pin" inputmode="numeric" minlength="4" maxlength="12" placeholder="4–12 digits" autocomplete="off" aria-label="New PIN">
+        <button type="submit" class="mini">Set</button>
+        <button type="button" class="mini ghost" id="pinClear">Clear</button>
+      </form>
+    </div>
+  </section>
+  </div>
+
+  <footer class="proof">
+    <div><b>Network access:</b> none (blocked by CSP)</div>
+    <div><b>Permissions:</b> storage only, no site access beyond WhatsApp Web</div>
+    <div><b>Settings:</b> kept on this device, never synced</div>
+    <a href="#" id="shortcuts">Change keyboard shortcuts</a>
+  </footer>
+
+  <script src="settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

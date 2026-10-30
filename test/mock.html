@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>(4) WhatsApp</title>
+<!-- Same load order as the manifest: shim stands in for chrome.*, then boot.css,
+     MAIN-world guard, settings + content script. All names below are fictional. -->
+<script src="chrome-shim.js"></script>
+<link rel="stylesheet" href="../extension/boot.css">
+<script src="../extension/notify-guard.js"></script>
+<script src="../extension/settings.js"></script>
+<script src="../extension/content.js"></script>
+<style>
+  body{margin:0;font:14.5px/1.35 "Segoe UI",system-ui,sans-serif;color:#111b21;background:#eae6df}
+  #app{height:100vh;display:flex}
+  #side{width:380px;background:#fff;border-right:1px solid #e9edef;display:flex;flex-direction:column}
+  #side>header{padding:14px 16px;font-size:22px;font-weight:700;color:#00a884;display:flex;justify-content:space-between}
+  .av{width:49px;height:49px;border-radius:50%;flex:none}
+  [role="listitem"]{display:flex;gap:12px;padding:10px 14px;align-items:center;border-bottom:1px solid #f0f2f5;cursor:pointer}
+  .col{flex:1;min-width:0}
+  .l1,.l2{display:flex;justify-content:space-between;gap:8px}
+  .l1 span[title]{font-size:17px}
+  .l2{color:#667781;font-size:14px}
+  .t{color:#667781;font-size:12px}
+  .badge{background:#25d366;color:#fff;border-radius:10px;padding:0 6px;font-size:12px}
+  #main{flex:1;display:flex;flex-direction:column;background:#efeae2}
+  #main>header{display:flex;gap:12px;align-items:center;padding:8px 16px;background:#fff}
+  #main>header .av{width:40px;height:40px}
+  #main>header span[title]{display:block}
+  .sub2{color:#667781;font-size:13px}
+  [role="application"]{flex:1;padding:16px 60px;overflow:auto}
+  [role="row"]{display:flex;margin:6px 0}
+  .message-out{margin-left:auto;background:#d9fdd3}
+  .message-in,.message-out{max-width:60%;padding:6px 9px;border-radius:8px;box-shadow:0 1px .5px rgba(0,0,0,.13);background-color:#fff}
+  .message-out{background-color:#d9fdd3}
+  .author{color:#c4467b;font-weight:600;font-size:13px}
+  [data-testid="quoted-message"]{background:#f0f2f5;border-left:4px solid #06cf9c;padding:4px 8px;border-radius:6px;margin-bottom:4px;font-size:13px}
+  .msgtime{display:block;text-align:right;color:#667781;font-size:11px}
+  .media{width:260px;height:150px;border-radius:6px;display:block}
+  footer{background:#f0f2f5;padding:10px 16px}
+  footer [contenteditable]{background:#fff;border-radius:8px;padding:9px 12px;min-height:20px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="side">
+    <header>WhatsApp <span class="t">mock</span></header>
+    <div id="pane-side">
+      <div role="grid" aria-label="Chat list" id="chatlist"></div>
+    </div>
+  </div>
+  <div id="main">
+    <header>
+      <img class="av" alt="" id="hdrAvatar">
+      <div role="button">
+        <span dir="auto" title="Meadow Grocers">Meadow Grocers</span>
+        <span class="sub2" title="Asha, Dev, Kiran, You">Asha, Dev, Kiran, You</span>
+      </div>
+    </header>
+    <div role="application" id="msgs">
+      <div role="row"><div data-id="false_1"><div class="message-in">
+        <span class="author" dir="auto">Asha Verma</span>
+        <div class="copyable-text" data-pre-plain-text="[4:27 pm] Asha Verma: "><span class="selectable-text copyable-text" dir="ltr"><span>Your order 403-2879505 could not be delivered. Please confirm if you still want the package.</span></span></div>
+        <span class="msgtime" dir="auto">4:27 pm</span>
+      </div></div></div>
+      <div role="row"><div data-id="true_2"><div class="message-out">
+        <div data-testid="quoted-message"><span dir="auto">Asha Verma</span><br><span dir="auto">Please confirm if you still want the package.</span></div>
+        <div class="copyable-text" data-pre-plain-text="[4:30 pm] You: "><span class="selectable-text copyable-text" dir="ltr"><span>Yes, deliver it tomorrow after 6.</span></span></div>
+        <span class="msgtime" dir="auto">4:30 pm</span>
+      </div></div></div>
+      <div role="row"><div data-id="false_3"><div class="message-in">
+        <span class="author" dir="auto">Dev Malhotra</span>
+        <div><img class="media" id="photo" alt=""></div>
+        <span class="msgtime" dir="auto">4:41 pm</span>
+      </div></div></div>
+    </div>
+    <footer><div contenteditable="true" class="copyable-text selectable-text" role="textbox" id="compose">Draft: my PIN is not here</div></footer>
+  </div>
+</div>
+<script>
+  // Fictional avatars as inline SVG (no network).
+  const av = (txt, c) => "data:image/svg+xml," + encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='${c}'/><text x='20' y='26' font-size='16' text-anchor='middle' fill='white' font-family='sans-serif'>${txt}</text></svg>`);
+  const chats = [
+    ["Priya Sharma", "Waah", "6:10 pm", "#d97706", ""],
+    ["Fruit Basket 2026", "~Bhavesh: DM2 500 gm mangoes", "6:33 pm", "#16a34a", "2"],
+    ["Courier pickup group", "Aditi: can someone pick up the parcel", "6:29 pm", "#2563eb", "2"],
+    ["Meadow Grocers", "Delivery attempted", "4:41 pm", "#7c3aed", ""],
+  ];
+  window.addChat = function ([name, prev, time, color, unread]) {
+    const li = document.createElement("div");
+    li.setAttribute("role", "listitem");
+    li.innerHTML = `<img class="av" alt="" src="${av(name[0], color)}">
+      <div class="col"><div class="l1"><span dir="auto" title="${name}">${name}</span><div class="t">${time}</div></div>
+      <div class="l2"><span dir="ltr" title="${prev}"><span>${prev}</span></span>${unread ? `<span class="badge">${unread}</span>` : ""}</div></div>`;
+    document.getElementById("chatlist").appendChild(li);
+    return li;
+  };
+  chats.forEach(addChat);
+  document.getElementById("hdrAvatar").src = av("M", "#7c3aed");
+  // A real blob: URL, like WhatsApp's decrypted media.
+  const cv = document.createElement("canvas"); cv.width = 260; cv.height = 150;
+  const g = cv.getContext("2d"); g.fillStyle = "#0ea5e9"; g.fillRect(0, 0, 260, 150);
+  g.fillStyle = "#fff"; g.font = "bold 22px sans-serif"; g.fillText("PRIVATE PHOTO", 40, 85);
+  cv.toBlob((b) => { document.getElementById("photo").src = URL.createObjectURL(b); });
+</script>
+<script src="checks.js"></script>
+</body>
+</html>

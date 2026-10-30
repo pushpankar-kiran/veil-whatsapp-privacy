@@ -1,0 +1,5 @@
+# Normalise text to LF in the repo; keep binary assets byte-for-byte
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.zip binary

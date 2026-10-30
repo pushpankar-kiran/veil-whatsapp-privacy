@@ -1,0 +1,17 @@
+# Packaged extension (rebuild with `python tools/package.py`; attached to Releases)
+dist/
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Internal handoff notes (not for the public repo)
+HANDOFF.md
+
+# Logs / OS / editor cruft
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

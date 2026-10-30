@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "Veil — Privacy Mask for WhatsApp Web",
+  "short_name": "Veil",
+  "version": "1.0.0",
+  "description": "Mask names, messages, media and notifications on WhatsApp Web. Zero network access: nothing ever leaves your browser.",
+  "minimum_chrome_version": "111",
+  "permissions": ["storage"],
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+  },
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Veil",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png" }
+  },
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "content_scripts": [
+    {
+      "matches": ["https://web.whatsapp.com/*"],
+      "css": ["boot.css"],
+      "js": ["settings.js", "content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": ["https://web.whatsapp.com/*"],
+      "js": ["notify-guard.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": false
+    }
+  ],
+  "commands": {
+    "toggle-mask": {
+      "suggested_key": { "default": "Alt+Shift+X" },
+      "description": "Turn masking on/off"
+    },
+    "panic-lock": {
+      "suggested_key": { "default": "Alt+Shift+L" },
+      "description": "Lock WhatsApp Web behind the privacy curtain now"
+    },
+    "reveal-chat": {
+      "suggested_key": { "default": "Alt+Shift+U" },
+      "description": "Show / hide the open chat only (re-masks when you switch chats)"
+    },
+    "presenter-mode": {
+      "suggested_key": { "default": "Alt+Shift+P" },
+      "description": "Apply the Presenter preset (redact, aliases, no reveal)"
+    }
+  }
+}

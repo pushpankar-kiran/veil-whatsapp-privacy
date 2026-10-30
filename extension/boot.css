@@ -1,0 +1,7 @@
+/* Fail-closed boot shield. Injected by the manifest at document_start, before any
+   WhatsApp content renders. The whole page stays blurred until content.js has
+   loaded settings and installed the real mask (it then sets data-veil-ready).
+   If content.js never runs, WhatsApp stays unreadable instead of leaking. */
+html:not([data-veil-ready]) body {
+  filter: blur(14px) grayscale(1) !important;
+}

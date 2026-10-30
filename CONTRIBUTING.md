@@ -32,7 +32,7 @@ Then load the extension in Chrome:
 
 ```bash
 python tools/audit.py        # zero-network audit (fails on any network API or external URL)
-python tools/run_checks.py   # 51 behaviour + security checks on a fictional mock page
+python tools/run_checks.py   # 56 behaviour + security checks on a fictional mock page
 python tools/package.py      # builds dist/veil-extension.zip
 ```
 

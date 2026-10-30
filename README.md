@@ -108,7 +108,7 @@ No analytics, no telemetry, no network requests, no servers. Names are read only
 
 ```bash
 python tools/audit.py        # zero-network audit: fails on any network API or external URL
-python tools/run_checks.py   # 51 headless behaviour + security checks (needs: pip install playwright)
+python tools/run_checks.py   # 56 headless behaviour + security checks (needs: pip install playwright)
 python tools/package.py      # builds dist/veil-extension.zip
 ```
 

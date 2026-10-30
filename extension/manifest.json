@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Veil — Privacy Mask for WhatsApp Web",
   "short_name": "Veil",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mask names, messages, media and notifications on WhatsApp Web. Zero network access: nothing ever leaves your browser.",
   "minimum_chrome_version": "111",
   "permissions": ["storage"],

@@ -4,7 +4,8 @@
   const frame = () => sleep(20); // not rAF: it pauses while the tab is hidden
   const set = (patch) => new Promise((r) => chrome.storage.local.set(patch, r)).then(() => sleep(30)).then(frame);
   const cs = (el, pseudo) => getComputedStyle(el, pseudo || null);
-  const blurred = (el) => /blur\(/.test(cs(el).filter);
+  // Masked = blurred, or (profile photos) flattened to a uniform disc with contrast(0).
+  const blurred = (el) => /blur\(|contrast\(0\)/.test(cs(el).filter);
   const q = (s) => document.querySelector(s);
   const qa = (s) => Array.from(document.querySelectorAll(s));
 
@@ -39,6 +40,11 @@
     ok("quoted reply blurred", blurred(quoted));
     ok("photo (blob:) blurred", blurred(photo), photo.dataset.veil);
     ok("avatar blurred", avatar.dataset.veil === "avatars" && blurred(avatar));
+    const avs = qa("#chatlist img").slice(0, 3);
+    ok("avatars masked uniformly: same flat disc, clipped to the circle (no halo)",
+      avs.every((a) => cs(a).filter === cs(avs[0]).filter && /contrast\(0\)/.test(cs(a).filter) && /circle/.test(cs(a).clipPath)),
+      avs.map((a) => cs(a).filter + " | " + cs(a).clipPath).join(" ; "));
+    ok("media blur clipped to its own box (no halo)", /inset/.test(cs(photo).clipPath), cs(photo).clipPath);
     ok("header name blurred", blurred(hdrName));
     ok("compose box blurred", blurred(compose), compose.dataset.veil);
     ok("tab title unread count removed", document.title === "WhatsApp", document.title);
@@ -177,6 +183,21 @@
     ok("show-chat: open conversation fully revealed (header, messages, photo, typing box)",
       isOpen() && !blurred(msg) && !blurred(hdrName) && !blurred(photo) && !blurred(compose) && !blurred(author));
     ok("show-chat: chat list stays masked", blurred(name) && blurred(prev) && blurred(avatar));
+    // Real WhatsApp: the header subtitle changes ("click here for contact info" -> "online"
+    // -> "typing..."), and the name span may have no title. Neither is a chat switch.
+    const sub = q('#main header .sub2');
+    sub.setAttribute("title", "online"); sub.textContent = "online";
+    await sleep(30);
+    sub.setAttribute("title", "typing…"); sub.textContent = "typing…";
+    await sleep(30);
+    ok("show-chat: subtitle changes (online / typing) keep the chat revealed", isOpen() && !blurred(msg));
+    hdrName.removeAttribute("title");
+    await sleep(30);
+    ok("show-chat: name span without a title still counts as the same chat", isOpen());
+    hdrName.setAttribute("title", "Meadow Grocers");
+    q("#msgs").appendChild(q("#msgs [role='row']").cloneNode(true)); // older messages load while scrolling
+    await sleep(30);
+    ok("show-chat: loading more messages keeps the chat revealed", isOpen());
     const hdrTitle = hdrName.getAttribute("title");
     hdrName.setAttribute("title", "Another Chat"); // simulate switching to another chat
     await sleep(30);

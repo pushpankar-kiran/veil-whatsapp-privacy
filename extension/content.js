@@ -67,8 +67,10 @@
     const mediaBlur = s.style === "redact" ? Math.max(24, blurPx * 3) : Math.max(12, blurPx * 2);
     const out = [
       `:root{--veil-blur:${blurPx}px;--veil-media-blur:${mediaBlur}px;--veil-delay:${Math.max(0, s.revealDelayMs | 0)}ms;` +
-        `--veil-bar:#3b4a54;--veil-alias-bg:#d9fdd3;--veil-alias-fg:#0b3d2e;}`,
+        `--veil-bar:#3b4a54;--veil-alias-bg:#d9fdd3;--veil-alias-fg:#0b3d2e;--veil-avatar-b:1.75;}`,
       `@media (prefers-color-scheme: dark){:root{--veil-bar:#8696a0;--veil-alias-bg:#005c4b;--veil-alias-fg:#e9fff8;}}`,
+      // Masked avatars match WhatsApp's own empty-avatar grey in each theme.
+      `:root:has(body.dark){--veil-avatar-b:.85;}`,
     ];
     const list = (sels) => sels.map((x) => `${gate} ${x}${hov}`).join(",\n");
     const all = [];
@@ -88,8 +90,14 @@
         }
         // No reveal: kill hover entirely so native title tooltips can't leak names.
         if (s.reveal === "none" && cat !== "compose") out.push(`${list(sels)}{pointer-events:none!important;}`);
+      } else if (cat === "avatars") {
+        // Every masked profile photo becomes the same flat disc: contrast(0) turns any
+        // photo into uniform grey (no colour hints, no dark/light differences), and
+        // clip-path stops the halo that blur used to spill outside the circle.
+        out.push(`${list(sels)}{filter:grayscale(1) contrast(0) brightness(var(--veil-avatar-b))!important;clip-path:circle(50%)!important;}`);
       } else {
-        out.push(`${list(sels)}{filter:blur(var(--veil-media-blur)) grayscale(1)!important;}`);
+        // clip-path keeps the blur inside the photo's own rounded box.
+        out.push(`${list(sels)}{filter:blur(var(--veil-media-blur)) grayscale(1)!important;clip-path:inset(0 round 8px)!important;}`);
       }
     }
 
@@ -430,11 +438,23 @@
   let chatBtn = null;
   let chatBtnLabel = null;
 
+  // Identifies the open chat by its NAME: the top-most text line in the header.
+  // The line below it ("click here for contact info" -> "online" -> "typing...")
+  // keeps changing, so keying on it re-masked the chat while you were reading.
   function currentChatKey() {
     const main = document.querySelector("#main");
     if (!main) return null;
-    const t = main.querySelector("header span[title]");
-    return (t && t.getAttribute("title")) || "#main";
+    const header = main.querySelector("header");
+    if (!header) return "#main";
+    let best = null;
+    let bestTop = Infinity;
+    for (const el of header.querySelectorAll("span[title], span[dir]")) {
+      const text = el.getAttribute("title") || el.textContent.trim();
+      if (!text) continue;
+      const top = el.getBoundingClientRect().top;
+      if (top < bestTop - 1) { best = text; bestTop = top; } // first wins on the same line
+    }
+    return best || "#main";
   }
 
   function setChatOpen(on) {
